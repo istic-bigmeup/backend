@@ -26,7 +26,7 @@ var click = function(idMission){
 	document.cookie = "bmu_vient_admin=true; expires=" + date + "; path=/";
 
 	// Redirects to profil.html
-	document.location = "../frontend/creationMission.html";
+	document.location = "../creationMission.html";
 };
 
 /**
@@ -34,7 +34,7 @@ var click = function(idMission){
  */
 // Demande de toutes les missions
 $.ajax({
-	url: "http://bigmeup.istic.univ-rennes1.fr/api/back/getMissions.php",
+	url: "http://administration.bigmeup.fr/api/back/getMissions.php",
 	async: false
 }).done(function(data){// When done
 	// Parses the data from a JSON to an array
@@ -63,6 +63,7 @@ var Missions = React.createClass({
 			// Adds the generated table row
 			returnValue.push(
 			<tr key={i}>
+				<td>{missions[i]["date_derniere_modif"]}</td>
 				<td>{getUsrMail(missions[i]["id_prestataire"])}</td>
 				<td>{getUsrMail(missions[i]["id_client"])}</td>
 				<td>{missions[i]["objet"]}</td>
@@ -81,18 +82,32 @@ var Missions = React.createClass({
 	render: function () {
 		return (
 			<div>
-				<table className="table table-striped">
-					<tbody>
+				<table id="tab" className="table table-striped">
+					<thead>
 						<tr>
+							<th>Dernière modification</th>
 							<th>Prestataire</th>
 							<th>Client</th>
 							<th>Objet</th>
 							<th>Etat</th>
 							<th>Action</th>
 						</tr>
+					</thead>
 						
+					<tbody>
 						{this.tab()}
 					</tbody>
+					
+					<tfoot>
+						<tr>
+							<th>Dernière modification</th>
+							<th>Prestataire</th>
+							<th>Client</th>
+							<th>Objet</th>
+							<th>Etat</th>
+							<th>Action</th>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		);
@@ -100,3 +115,11 @@ var Missions = React.createClass({
 });
 
 ReactDOM.render(<Missions />, document.getElementById("container"));
+
+$(document).ready(function() {
+	$('#tab').DataTable({
+		"language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/French.json"
+        }
+	});
+});

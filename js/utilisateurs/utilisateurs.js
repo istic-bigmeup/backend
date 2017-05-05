@@ -8,7 +8,7 @@ var usr 		= [];
  */
 // Demande de toutes les usr
 $.ajax({
-	url: "http://bigmeup.istic.univ-rennes1.fr/api/front/getUsers.php",
+	url: "http://administration.bigmeup.fr/api/front/getUsers.php",
 	async: false
 }).done(function(data){// When done
 	// Parses the data from a JSON to an array
@@ -28,7 +28,7 @@ var click = function(usrId){
 	// On met le cookie
 	document.cookie 	= "bmu_adm_usr_id=" + usrId + "; expires=" + date + "; path=/";
 	// On redirige
-	window.location = "http://bigmeup.istic.univ-rennes1.fr/frontend/profil.html";
+	window.location = "http://administration.bigmeup.fr/profil.html";
 }
 
 /**
@@ -62,17 +62,28 @@ var Utilisateurs = React.createClass({
 	render: function () {
 		return (
 			<div>
-				<table className="table table-striped">
-					<tbody>
+				<table id="tab" className="table table-striped">
+					<thead>
 						<tr>
 							<th>Nom</th>
 							<th>Prénom</th>
 							<th>Adresse email</th>
 							<th>Action</th>
 						</tr>
-						
+					</thead>
+				
+					<tbody>
 						{this.tab()}
 					</tbody>
+					
+					<tfoot>
+						<tr>
+							<th>Nom</th>
+							<th>Prénom</th>
+							<th>Adresse email</th>
+							<th>Action</th>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		);
@@ -80,3 +91,11 @@ var Utilisateurs = React.createClass({
 });
 
 ReactDOM.render(<Utilisateurs />, document.getElementById("container"));
+
+$(document).ready(function() {
+	$('#tab').DataTable({
+		"language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/French.json"
+        }
+	});
+});
